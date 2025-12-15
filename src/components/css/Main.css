@@ -1,0 +1,246 @@
+@font-face {
+    font-family: 'Inter - semi bold';
+    src: url('../../fonts/Inter/static/Inter-SemiBold.ttf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'Inter - medium';
+    src: url('../../fonts/Inter/static/Inter-Medium.ttf') format('truetype');
+  }
+
+/* App frame */
+#MainApp {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  font-family: 'Inter - semi bold', sans-serif;
+}
+
+/* Top bar */
+.topbar {
+  height: 56px;
+  border-bottom: 1px solid #cfcfcf;
+  display: grid;
+  grid-template-columns: 220px 1fr 64px;
+  align-items: center;
+  padding: 0 12px;
+  background: #fff;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.topbar-search {
+  display: flex;
+  justify-content: center;
+}
+
+.topbar-input {
+  width: min(760px, 95%);
+  height: 34px;
+  border: 1px solid #bdbdbd;
+  border-radius: 18px;
+  padding: 0 14px;
+  outline: none;
+}
+
+.topbar-user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #4d4d4d;
+}
+
+/* Layout */
+.layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  min-height: 0;
+}
+
+/* Sidebar */
+.sidebar {
+  border-right: 1px solid #cfcfcf;
+  padding: 14px 14px 18px;
+  overflow: auto;
+}
+
+.sidebar-title {
+  margin: 4px 0 14px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.field .label {
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.input {
+  width: 100%;
+  height: 32px;
+  border: 1px solid #bdbdbd;
+  padding: 0 10px;
+  outline: none;
+}
+
+.textarea {
+  width: 100%;
+  height: 90px;
+  border: 1px solid #bdbdbd;
+  padding: 8px 10px;
+  resize: none;
+  outline: none;
+}
+
+.colors {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+}
+
+.colorDot {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #666;
+  cursor: pointer;
+}
+
+.colorDot.active {
+  outline: 2px solid #222;
+  outline-offset: 2px;
+}
+
+.addBtn {
+  height: 36px;
+  border: 1px solid #a8502f;
+  background: #d96a3a;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Tag suggestions + chips */
+.tagHints {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tagHint {
+  border: none;
+  background: #2f2f2f;
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.tagRow {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tagChip {
+  border: none;
+  background: #2f2f2f;
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.tagChip .x {
+  margin-left: 6px;
+  opacity: 0.9;
+}
+
+/* Board */
+.board {
+  padding: 18px;
+  overflow: auto;
+}
+
+.notesGrid {
+  display: flex;
+  gap: 22px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.note {
+  width: 260px;
+  min-height: 220px;
+  border: 1px solid #7b7b7b;
+  padding: 10px 10px 8px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+}
+
+.noteHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.noteTitle {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.noteTags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.noteTag {
+  background: #2f2f2f;
+  color: #fff;
+  font-size: 11px;
+  padding: 3px 7px;
+}
+
+.noteBody {
+  font-size: 13px;
+  line-height: 1.35;
+  white-space: pre-wrap;
+}
+
+.noteFooter {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: #333;
+}
+
+.noteDelete {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+}
