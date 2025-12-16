@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/Notatnik_It/static/css/main.1c0d1258.css",
-    "main.js": "/Notatnik_It/static/js/main.dbeedcae.js",
+    "main.js": "/Notatnik_It/static/js/main.f5b2738f.js",
     "static/js/453.117b0875.chunk.js": "/Notatnik_It/static/js/453.117b0875.chunk.js",
     "static/media/logo.png": "/Notatnik_It/static/media/logo.ec012da4bb05bd443a7c.png",
     "static/media/Inter-SemiBold.ttf": "/Notatnik_It/static/media/Inter-SemiBold.6058d3da655fb35169c2.ttf",
     "static/media/Inter-Medium.ttf": "/Notatnik_It/static/media/Inter-Medium.3f7acfe50aad7ad68548.ttf",
     "index.html": "/Notatnik_It/index.html",
     "main.1c0d1258.css.map": "/Notatnik_It/static/css/main.1c0d1258.css.map",
-    "main.dbeedcae.js.map": "/Notatnik_It/static/js/main.dbeedcae.js.map",
+    "main.f5b2738f.js.map": "/Notatnik_It/static/js/main.f5b2738f.js.map",
     "453.117b0875.chunk.js.map": "/Notatnik_It/static/js/453.117b0875.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1c0d1258.css",
-    "static/js/main.dbeedcae.js"
+    "static/js/main.f5b2738f.js"
   ]
 }
