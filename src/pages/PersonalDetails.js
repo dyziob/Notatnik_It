@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import './css/Registration.css';
-import './css/LoginPage.css';
+import '../css/Registration.css';
+import '../css/LoginPage.css';
 import { Link } from 'react-router-dom';
 
 function RegistrationPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -15,9 +15,7 @@ function RegistrationPage() {
 
   const handleRegistration = (event) => {
     event.preventDefault();
-    if (username && password && password === confirmPassword && firstName && lastName && email && selectedTags.length > 0) {
-      // Tutaj można dodać logikę rejestracji użytkownika
-      // Na potrzeby tego przykładu przyjmujemy, że użytkownik zostanie zarejestrowany, jeśli poda nazwę użytkownika, hasło, imię, nazwisko, email, wybierze co najmniej jeden tag oraz potwierdzi hasło
+    if (username && password && password === confirmPassword && firstName && lastName && email > 0) {
       setRegistered(true);
       alert('Zarejestrowano pomyślnie!');
     } else {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './css/LoginPage.css';
+import '../css/LoginPage.css';
 import { Link, useNavigate } from 'react-router-dom';
 
 function LoginPage() {
@@ -7,14 +7,16 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    if (username && password) {
-      //alert('Zalogowano pomyślnie!');
-      navigate('/main');
-    } else {
-      alert('Proszę podać nazwę użytkownika i hasło.');
-    }
-  };
+  const handleLogin = (e) => {
+  e.preventDefault();
+
+  if (username && password) {
+    localStorage.setItem("authUser", username); // ⬅️ KLUCZOWE
+    navigate("/main");
+  } else {
+    alert("Proszę podać nazwę użytkownika i hasło.");
+  }
+};
 
   return (
     <div id='LoginId'>
@@ -47,7 +49,7 @@ function LoginPage() {
             </div>
         </div>
         <div className="login-image-container login-animation">
-          <img src={require("./img/logo.png")} alt="Portfolio" />
+          <img src={require("../img/logo.png")} alt="Portfolio" />
           <h1>Notatnik It -<br></br>twoje miejsce na notatki!</h1>
         </div>
       </div>

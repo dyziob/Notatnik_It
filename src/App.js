@@ -1,21 +1,21 @@
 import './App.css';
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
-import LoginPage from './components/index';
-import RegistrationPage from './components/RegistrationPage';
-import Main from './components/main';
-import PersonalDetails from './components/PersonalDetails';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
+import LoginPage from './pages/index';
+import RegistrationPage from './pages/RegistrationPage';
+import Main from './pages/main';
+import PersonalDetails from './pages/PersonalDetails';
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path='/register' element={<RegistrationPage />} />
           <Route path='/main' element={<Main />} />
           <Route path='/personalDetails' element={<PersonalDetails />} />
         </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 

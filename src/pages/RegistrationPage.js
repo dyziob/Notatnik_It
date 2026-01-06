@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import './css/Registration.css';
-import './css/LoginPage.css';
+import '../css/Registration.css';
+import '../css/LoginPage.css';
 import { Link } from 'react-router-dom';
 
 function RegistrationPage() {
