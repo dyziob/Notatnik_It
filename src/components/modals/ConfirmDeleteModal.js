@@ -22,10 +22,10 @@ export default function ConfirmDeleteModal({ note, onCancel, onConfirm }) {
         </div>
 
         <div className="confirmActions">
-          <button className="confirmCancel" onClick={onCancel}>
+          <button className="confirmCancel btnSlide" onClick={onCancel}>
             Anuluj
           </button>
-          <button className="confirmDelete" onClick={() => onConfirm(note)}>
+          <button className="confirmDelete btnSlide" onClick={() => onConfirm(note)}>
             Tak, Usuń
           </button>
         </div>

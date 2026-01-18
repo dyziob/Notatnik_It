@@ -8,6 +8,7 @@ import NotesGrid from "../components/NotesGrid";
 import ViewNoteModal from "../components/modals/ViewNoteModal";
 import EditNoteModal from "../components/modals/EditNoteModal";
 import ConfirmDeleteModal from "../components/modals/ConfirmDeleteModal";
+import "highlight.js/styles/github.css";
 
 import { useLocalStorageNotes } from "../hooks/useLocalStorageNotes";
 
@@ -51,16 +52,17 @@ export default function Main() {
     });
   }, [notes, query]);
 
-  const handleAddNote = ({ title, content, tags, color }) => {
+  const handleAddNote = ({ title, content, tags, color, contentMode }) => {
     const now = new Date();
-    const newNote = {
-      id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()),
-      title,
-      content,
-      tags,
-      color,
-      createdAt: now.toISOString(),
-    };
+      const newNote = {
+        id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()),
+        title,
+        content,
+        tags,
+        color,
+        contentMode: contentMode || "auto", // "text" | "auto" | "code"
+        createdAt: now.toISOString(),
+      };
     setNotes((prev) => [newNote, ...prev]);
   };
 

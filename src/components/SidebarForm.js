@@ -14,6 +14,8 @@ export default function SidebarForm({
 
   const [selectedColor, setSelectedColor] = useState(noteColors[0].hex);
 
+  const [contentMode, setContentMode] = useState("auto"); // "text" | "auto" | "code"
+
   const tagHints = useMemo(() => {
     const value = tagInput.trim().toLowerCase();
     if (!value) return defaultTags;
@@ -37,6 +39,7 @@ export default function SidebarForm({
     setSelectedTags([]);
     setSelectedColor(noteColors[0].hex);
     setShowTagHints(false);
+    setContentMode("auto");
   };
 
   const submit = (e) => {
@@ -50,6 +53,7 @@ export default function SidebarForm({
       content: c,
       tags: selectedTags,
       color: selectedColor,
+      contentMode,
     });
 
     resetForm();
@@ -69,6 +73,46 @@ export default function SidebarForm({
             placeholder="Podaj tytuł..."
           />
         </label>
+
+        <div className="field">
+          <div className="label">Tryb treści</div>
+
+          <div
+            className="segmented"
+            data-active={contentMode}
+            role="tablist"
+            aria-label="Tryb treści"
+          >
+            <div className="segIndicator" aria-hidden="true" />
+
+            <button
+              type="button"
+              className={"segBtn" + (contentMode === "text" ? " active" : "")}
+              onClick={() => setContentMode("text")}
+              aria-pressed={contentMode === "text"}
+            >
+              Tekst
+            </button>
+
+            <button
+              type="button"
+              className={"segBtn" + (contentMode === "auto" ? " active" : "")}
+              onClick={() => setContentMode("auto")}
+              aria-pressed={contentMode === "auto"}
+            >
+              Auto
+            </button>
+
+            <button
+              type="button"
+              className={"segBtn" + (contentMode === "code" ? " active" : "")}
+              onClick={() => setContentMode("code")}
+              aria-pressed={contentMode === "code"}
+            >
+              Kod
+            </button>
+          </div>
+        </div>
 
         <label className="field">
           <div className="label">Treść notatki</div>
@@ -145,7 +189,7 @@ export default function SidebarForm({
           </div>
         </div>
 
-        <button className="addBtn" type="submit">
+        <button className="addBtn btnSlide" type="submit">
           Dodaj
         </button>
       </form>

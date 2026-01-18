@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../css/LoginPage.css';
 import { Link, useNavigate } from 'react-router-dom';
+import "highlight.js/styles/github.css";
 
 function LoginPage() {
   const navigate = useNavigate();

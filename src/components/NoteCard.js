@@ -1,4 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import NoteContent from "./NoteContent";
+
 
 export default function NoteCard({ note, onView, onEdit, onDelete }) {
   const bodyRef = useRef(null);
@@ -54,31 +56,31 @@ export default function NoteCard({ note, onView, onEdit, onDelete }) {
 
 
       <div ref={bodyRef} className="noteBody">
-        {note.content}
+        <NoteContent text={note.content} mode={note.contentMode || "text"} enableCopy={false} />
       </div>
 
       <div className="noteFooter">
         <span className="noteDate">
           {new Date(note.createdAt).toLocaleDateString("pl-PL")}
         </span>
-      </div>
 
-      {isOverflowing && (
+        {isOverflowing && (
         <div className="noteMoreIcon" title="Notatka zawiera więcej treści">
-          ↗
+          ⋯
         </div>
       )}
+      </div>
 
       <div className="noteOverlay">
-        <button type="button" className="overlayBtn" onClick={() => onView(note)}>
+        <button type="button" className="overlayBtn btnSlide" onClick={() => onView(note)}>
           👁 Przeglądaj notatkę
         </button>
 
-        <button type="button" className="overlayBtn" onClick={() => onEdit(note)}>
+        <button type="button" className="overlayBtn btnSlide" onClick={() => onEdit(note)}>
           ✏️ Edytuj notatkę
         </button>
 
-        <button type="button" className="overlayBtn danger" onClick={() => onDelete(note)}>
+        <button type="button" className="overlayBtn danger btnSlide" onClick={() => onDelete(note)}>
           🗑 Usuń notatkę
         </button>
       </div>
