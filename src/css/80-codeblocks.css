@@ -1,0 +1,36 @@
+.codeBlock {
+  position: relative;
+  width: 100%;
+}
+
+.codePre {
+  margin: 0;
+  padding: 10px;
+  border-radius: 6px;
+  overflow: auto;
+  max-width: 100%;
+}
+
+/* przycisk kopiowania */
+.copyCodeBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.25);
+  background: rgba(255,255,255,0.85);
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 12px;
+  z-index: 2;
+}
+
+.copyCodeBtn:hover {
+  background: rgba(255,255,255,0.95);
+}
+
+.copyCodeBtn.copied {
+  border-color: rgba(0,0,0,0.35);
+}

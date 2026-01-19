@@ -1,0 +1,39 @@
+/* Board */
+.board {
+  padding: 18px;
+  overflow: auto;
+}
+
+.btnSlide {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+  transition: color 260ms ease, transform 160ms ease;
+}
+
+.btnSlide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--hover-bg, #2f2f2f);
+  transform: translateX(-110%);
+  transition: transform 260ms ease;
+  z-index: -1;
+  border-radius: inherit;
+}
+
+.btnSlide:hover::before {
+  transform: translateX(0);
+}
+
+.btnSlide:hover {
+  transform: translateY(-1px);
+  color: var(--hover-color, #fff);
+}
+
+.notesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 425px);
+  gap: 80px;
+  justify-content: start;
+}

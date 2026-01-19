@@ -1,0 +1,256 @@
+/* App frame */
+#MainApp {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  font-family: 'Inter - semi bold', sans-serif;
+}
+
+/* Top bar */
+.topbar {
+  height: 56px;
+  border-bottom: 1px solid #cfcfcf;
+  display: grid;
+  grid-template-columns: 220px 1fr 64px;
+  align-items: center;
+  padding: 0 12px;
+  background: #fff;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.topbar-search {
+  display: flex;
+  justify-content: center;
+}
+
+.topbar-input {
+  width: min(760px, 95%);
+  height: 34px;
+  border: 1px solid #bdbdbd;
+  border-radius: 18px;
+  padding: 0 14px;
+  outline: none;
+}
+
+/* ===== Topbar: user button + menu ===== */
+.topbar-user {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.userBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 2px solid #4d4d4d;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+
+.userBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+.userBtn.open {
+  box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+}
+
+.userIcon {
+  width: 18px;
+  height: 18px;
+  color: #2f2f2f;
+}
+
+/* Dropdown */
+.userMenu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 200px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.14);
+  border-radius: 10px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.18);
+  overflow: hidden;
+  z-index: 1000;
+
+  transform-origin: top right;
+  animation: userMenuIn 140ms ease-out;
+}
+
+@keyframes userMenuIn {
+  from { transform: translateY(-6px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+.userMenuItem {
+  width: 100%;
+  padding: 12px 12px;
+  text-align: left;
+  border: none;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 800;
+  color: #2f2f2f;
+  transition: background 140ms ease;
+}
+
+.userMenuItem:hover {
+  background: rgba(0,0,0,0.06);
+}
+
+.userMenuDivider {
+  height: 1px;
+  background: rgba(0,0,0,0.10);
+}
+
+.userMenuItem.danger {
+  color: #b00000;
+}
+
+.userMenuItem.danger:hover {
+  background: rgba(176,0,0,0.10);
+}
+
+
+/* Layout */
+.layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  min-height: 0;
+}
+
+/* ===== THEME ===== */
+/* ===== THEME: DARK (czytelny, nie "czarna dziura") ===== */
+#MainApp.theme-dark {
+  background: #0f1115;
+  color: #e9e9ee;
+}
+
+/* topbar */
+#MainApp.theme-dark .topbar {
+  background: #151826;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  color: #fff;
+}
+
+#MainApp.theme-dark .topbar-input {
+  background: #0f1115;
+  border-color: rgba(255,255,255,0.16);
+  color: #fff;
+}
+
+#MainApp.theme-dark .topbar-input::placeholder {
+  color: rgba(255,255,255,0.55);
+}
+
+/* sidebar */
+#MainApp.theme-dark .sidebar {
+  background: #151826;
+  border-right: 1px solid rgba(255,255,255,0.10);
+  color: #fff;
+}
+
+#MainApp.theme-dark .label,
+#MainApp.theme-dark .profileRowValue,
+#MainApp.theme-dark .miniPreviewTitle {
+  color: rgba(255,255,255,0.82);
+}
+
+#MainApp.theme-dark .input,
+#MainApp.theme-dark .textarea {
+  background: #0f1115;
+  border-color: rgba(255,255,255,0.16);
+  color: #fff;
+}
+
+#MainApp.theme-dark .input::placeholder,
+#MainApp.theme-dark .textarea::placeholder {
+  color: rgba(255,255,255,0.55);
+}
+
+/* BOARD (to Ci brakowało) */
+#MainApp.theme-dark .board {
+  background: #0f1115;
+}
+
+/* note card */
+#MainApp.theme-dark .note {
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.28),
+    0 16px 34px rgba(0,0,0,0.32);
+}
+
+#MainApp.theme-dark .noteTitle,
+#MainApp.theme-dark .noteDate,
+#MainApp.theme-dark .noteBody,
+#MainApp.theme-dark .miniNoteTitle,
+#MainApp.theme-dark .miniNoteBody {
+  color: rgba(0,0,0,0.88); /* UWAGA: bo notatki są kolorowe (żółty/niebieski itd.) */
+}
+
+/* overlay na notatce */
+#MainApp.theme-dark .noteOverlay {
+  background: rgba(0,0,0,0.60);
+}
+
+/* modale */
+#MainApp.theme-dark .modal,
+#MainApp.theme-dark .confirmModal {
+  background: #151826;
+  color: #fff;
+  border-color: rgba(255,255,255,0.14);
+}
+
+#MainApp.theme-dark .modalTitle,
+#MainApp.theme-dark .confirmTitle {
+  color: #fff;
+}
+
+#MainApp.theme-dark .confirmText {
+  color: rgba(255,255,255,0.78);
+}
+
+#MainApp.theme-dark .segmented,
+#MainApp.theme-dark .segmented2 {
+  background: #0f1115;
+  border: 1px solid rgba(255,255,255,0.16);
+}
+
+#MainApp.theme-dark .segBtn, 
+#MainApp.theme-dark .segBtn2 {
+  color: rgba(255,255,255,0.75);
+}
+
+#MainApp.theme-dark .segBtn.active, 
+#MainApp.theme-dark .segBtn2.active {
+  color: #0f1115; /* tekst na białym suwaku */
+}
+
+#MainApp.theme-dark .segIndicator, 
+#MainApp.theme-dark .segIndicator2 {
+  background: #ffffff;
+}
+
+/* ===== NOTE SIZE ===== */
+.notes-sm .note { height: 360px; min-height: 360px; }
+.notes-md .note { height: 425px; min-height: 425px; }
+.notes-lg .note { height: 520px; min-height: 520px; }
+
+/* jeśli używasz grid repeat(auto-fit, 425px) — też możesz zrobić per size */
+.notes-sm .notesGrid { grid-template-columns: repeat(auto-fit, 360px); }
+.notes-md .notesGrid { grid-template-columns: repeat(auto-fit, 425px); }
+.notes-lg .notesGrid { grid-template-columns: repeat(auto-fit, 520px); }

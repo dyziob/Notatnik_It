@@ -1,5 +1,15 @@
 import React, { useMemo, useState } from "react";
-import "../css/Main.css";
+import { useNavigate } from "react-router-dom";
+import SettingsModal from "../components/modals/SettingsModal";
+import "../css/00-fonts.css";
+import "../css/10-app-layout.css";
+import "../css/20-sidebar.css";
+import "../css/30-board-notes.css";
+import "../css/40-note-card.css";
+import "../css/50-modals.css";
+import "../css/60-confirm-modal.css";
+import "../css/70-segmented.css";
+import "../css/80-codeblocks.css";
 
 import Topbar from "../components/Topbar";
 import SidebarForm from "../components/SidebarForm";
@@ -30,15 +40,40 @@ const NOTE_COLORS = [
 
 export default function Main() {
   const [query, setQuery] = useState("");
+  const [openSettings, setOpenSettings] = useState(false);
+  const navigate = useNavigate();
 
   const user = localStorage.getItem("authUser");
   const storageKey = user ? `notes_${user}` : "notes_guest";
+
+  const settingsKey = user ? `settings_${user}` : "settings_guest";
+
+  const [appSettings, setAppSettings] = useState(() => {
+    try {
+      const raw = localStorage.getItem(settingsKey);
+      const parsed = raw ? JSON.parse(raw) : null;
+      return {
+        theme: parsed?.theme === "dark" ? "dark" : "light",
+        noteSize: ["sm", "md", "lg"].includes(parsed?.noteSize) ? parsed.noteSize : "md",
+      };
+    } catch {
+      return { theme: "light", noteSize: "md" };
+    }
+  });
 
   const [notes, setNotes] = useLocalStorageNotes(storageKey);
 
   const [openNote, setOpenNote] = useState(null);
   const [editNote, setEditNote] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
+
+  const handleLogout = () => {
+    localStorage.removeItem("authUser");
+
+    setQuery("");
+
+    navigate("/", { replace: true });
+  };
 
   const filteredNotes = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -51,6 +86,32 @@ export default function Main() {
       return inTitle || inContent || inTags;
     });
   }, [notes, query]);
+
+  const profileStats = useMemo(() => {
+    const notesCount = notes.length;
+
+    const uniqueTags = new Set();
+    let codeCount = 0;
+    let lastCreatedAt = null;
+
+    for (const n of notes) {
+      (n.tags || []).forEach((t) => uniqueTags.add(t));
+      if (n.contentMode === "code") codeCount++;
+
+      if (n.createdAt) {
+        const d = new Date(n.createdAt);
+        if (!lastCreatedAt || d > lastCreatedAt) lastCreatedAt = d;
+      }
+    }
+
+    return {
+      notesCount,
+      tagsCount: uniqueTags.size,
+      codeCount,
+      lastNoteDate: lastCreatedAt ? lastCreatedAt.toISOString() : null,
+    };
+  }, [notes]);
+
 
   const handleAddNote = ({ title, content, tags, color, contentMode }) => {
     const now = new Date();
@@ -79,8 +140,13 @@ export default function Main() {
   };
 
   return (
-    <div id="MainApp">
-      <Topbar query={query} setQuery={setQuery} />
+    <div id="MainApp" className={`theme-${appSettings.theme} notes-${appSettings.noteSize}`}>
+      <Topbar
+        query={query}
+        setQuery={setQuery}
+        profileStats={profileStats}
+        onOpenSettings={() => setOpenSettings(true)}
+        onLogout={handleLogout} />
 
       <div className="layout">
         <SidebarForm
@@ -109,6 +175,18 @@ export default function Main() {
         note={deleteTarget}
         onCancel={() => setDeleteTarget(null)}
         onConfirm={confirmDelete}
+      />
+
+      <SettingsModal
+        open={openSettings}
+        onClose={() => setOpenSettings(false)}
+        onApply={(settings) => {
+          // 1) ustaw w stanie aplikacji (od razu zmieni UI)
+          setAppSettings(settings);
+
+          // 2) zapisz dla usera (na przyszłość)
+          localStorage.setItem(settingsKey, JSON.stringify(settings));
+        }}
       />
     </div>
   );

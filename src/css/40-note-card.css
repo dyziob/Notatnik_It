@@ -1,0 +1,175 @@
+.note {
+  width: 100%;
+  min-height: 425px;
+  height: 425px;
+  border: none;
+  padding: 14px 14px 12px;
+  background: #fff;
+
+  border-radius: 8px;
+
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.12),
+    0 8px 18px rgba(0,0,0,0.18);
+
+  transition:
+    box-shadow 160ms ease,
+    transform 160ms ease;
+
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.note:hover {
+  box-shadow:
+    0 6px 12px rgba(0,0,0,0.18),
+    0 16px 32px rgba(0,0,0,0.22);
+
+  transform: translateY(-3px);
+}
+
+.noteHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.noteTitle {
+  width: 100%;
+  text-align: center;
+
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1.25;
+
+  margin-bottom: 8px;
+
+  letter-spacing: 0.3px;
+}
+
+.noteDivider {
+  width: 60%;
+  height: 1px;
+  background: rgba(0,0,0,0.25);
+  margin: 6px auto 10px;
+}
+
+.noteTags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.noteTag {
+  background: #2f2f2f;
+  color: #fff;
+  font-size: 11px;
+  padding: 3px 7px;
+}
+
+.noteBody {
+  font-size: 13px;
+  line-height: 1.45;
+  white-space: normal;
+  overflow: hidden;
+  word-break: break-word;
+  flex: 1;
+}
+
+/* kod w notatkach */
+.noteBody pre,
+.noteBody code {
+  font-family: var(--code-font);
+  font-variant-ligatures: contextual;
+  font-feature-settings: "liga" 1, "calt" 1;
+  font-weight: 500;
+}
+
+.noteFooter {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: relative;
+  padding-top: 6px;
+}
+
+.noteDelete {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.noteMoreIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4px);
+
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.16),
+    0 4px 10px rgba(0,0,0,0.12);
+
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  color: rgba(0,0,0,0.6);
+
+  pointer-events: none;
+}
+
+.noteOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 18px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+}
+
+.note:hover .noteOverlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.overlayBtn {
+  height: 44px;
+  border-radius: 6px;
+  border: 1px solid #2b2b2b;
+  background: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.overlayBtn.danger {
+  background: #b00000;
+  color: #fff;
+  border-color: #7a0000;
+}
+
+.overlayBtn.btnSlide {
+  --hover-bg: #2f2f2f;     /* czarne tło */
+  --hover-color: #fff;     /* biały tekst */
+}
+
+.overlayBtn.danger.btnSlide {
+  --hover-bg: #d00000;
+  --hover-color: #fff;
+}

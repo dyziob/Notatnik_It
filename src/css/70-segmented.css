@@ -1,0 +1,128 @@
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: #e6e6e6;
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+  user-select: none;
+}
+
+.segmented {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: #e6e6e6;
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+  user-select: none;
+  overflow: hidden;
+}
+
+/* animowany "slider" pod aktywnym przyciskiem */
+.segIndicator {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: calc((100% - 8px - 8px) / 3); /* 3 kolumny + gapy */
+  height: calc(100% - 8px);
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.18),
+    0 6px 14px rgba(0,0,0,0.10);
+  transform: translateX(0%);
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 0;
+}
+
+/* pozycje dla 3 trybów */
+.segmented[data-active="text"] .segIndicator {
+  transform: translateX(0%);
+}
+.segmented[data-active="auto"] .segIndicator {
+  transform: translateX(calc(100% + 4px));
+}
+.segmented[data-active="code"] .segIndicator {
+  transform: translateX(calc(200% + 8px));
+}
+
+.segBtn {
+  position: relative;
+  z-index: 1;
+  height: 34px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13px;
+  color: #333;
+  transition: color 140ms ease;
+}
+
+.segBtn:hover {
+  color: #111;
+}
+
+/* active nie musi już zmieniać tła (bo robi to segIndicator) */
+.segBtn.active {
+  color: #111;
+}
+
+.segBtn:active {
+  transform: translateY(1px);
+}
+
+/* ===== Segmented v2 (dla Settings) ===== */
+.segmented2 {
+  --seg-count: 3;
+  --seg-index: 0;
+
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--seg-count), 1fr);
+  padding: 3px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.06);
+  box-sizing: border-box;
+}
+
+.segIndicator2 {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+
+  width: calc((100% - 6px) / var(--seg-count));
+  transform: translateX(calc(var(--seg-index) * 100%));
+
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+
+  transition: transform 220ms ease, width 220ms ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.segBtn2 {
+  position: relative;
+  z-index: 1;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 10px 8px;
+  font-size: 13px;
+}
+
+.segmented2--sm .segBtn2 {
+  padding: 8px 8px;
+  font-size: 16px;
+}
+
+
+

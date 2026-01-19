@@ -1,0 +1,542 @@
+/* kod w modalu */
+.modalBody pre,
+.modalBody code {
+  font-family: var(--code-font);
+  font-variant-ligatures: contextual;
+  font-feature-settings: "liga" 1, "calt" 1;
+  font-weight: 500;
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal {
+  position: relative;
+  width: min(700px, 92vw);
+  max-height: 80vh;
+  overflow: auto;
+  background: #fff;
+  border: 1px solid #cfcfcf;
+  padding: 18px;
+}
+
+.modal--edit {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal--edit .modalContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.modal--edit .field {
+  margin-bottom: 20px;
+}
+
+/* Label wyraźniej oddzielony od inputa */
+.modal--edit .label {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+/* Inputy i textarea dostają trochę oddechu */
+.modal--edit .input,
+.modal--edit .textarea {
+  margin-top: 2px;
+}
+
+/* Slider (tekst/auto/kod) nie klei się do labela */
+.modal--edit .segmented {
+  margin-top: 6px;
+}
+
+/* 2 kolumny tylko w edycji */
+.modal--edit .editGrid {
+  display: grid;
+  grid-template-columns: 420px 1fr;  /* lewa stała, prawa elastyczna */
+  gap: 22px;
+  align-items: start;
+}
+
+/* prawa kolumna ma rosnąć, żeby textarea była duża */
+.modal--edit .editRight {
+  min-width: 0; /* ważne dla grid, żeby nie rozpychało */
+}
+
+/* textarea: wypełnia przestrzeń */
+.modal--edit .field--grow {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.modal--edit .textarea--editBig {
+  flex: 1;
+  min-height: clamp(420px, 65vh, 820px);
+  resize: none;
+  overflow: auto;
+}
+
+/* ===== Mini podgląd w Edytuj notatkę ===== */
+.modal--edit .miniPreviewWrap {
+  margin-top: 18px;
+  padding-top: 10px;
+  border-top: 1px solid #e6e6e6;
+}
+
+.modal--edit .miniPreviewTitle {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.modal--edit.modal--large {
+  height: 92vh;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal--edit .modalBody--large {
+  flex: 1;
+  min-height: 0;   /* <— super ważne */
+}
+
+/* karta mini jak na głównej */
+.modal--edit .miniNote {
+  width: 100%;
+  max-width: 330px;          /* żeby wyglądało jak karta */
+  min-height: 210px;
+  border-radius: 10px;
+  padding: 12px 12px 10px;
+
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.12),
+    0 10px 22px rgba(0,0,0,0.16);
+
+  position: relative;
+  overflow: hidden;
+}
+
+.modal--edit .miniNoteHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.modal--edit .miniNoteTitle {
+  font-weight: 900;
+  font-size: 16px;
+  text-align: center;
+}
+
+.modal--edit .miniNoteBar {
+  width: 60%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.25);
+  margin: 6px auto 10px;
+}
+
+.modal--edit .miniNoteTags {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.modal--edit .miniNoteBody {
+  font-size: 12.5px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+
+  /* żeby nie rozpychało */
+  max-height: 110px;
+  overflow: hidden;
+  word-break: break-word;
+  opacity: 0.92;
+}
+
+/* ikonka „więcej” – bez obramowania */
+.modal--edit .miniMoreIcon {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255,255,255,0.35);
+  font-size: 18px;
+  font-weight: 900;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.modal--edit .field--slider {
+  margin-top: 20px;
+}
+
+@media (max-width: 920px) {
+  .modal--edit .editGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal--edit .textarea--editBig {
+    min-height: 260px;
+  }
+}
+
+@media (max-height: 800px) {
+  .modal--edit .miniNote {
+    min-height: 160px;
+  }
+
+  .modal--edit .miniNoteBody {
+    max-height: 70px;
+  }
+}
+
+.modal--large {
+  position: relative;
+
+  width: min(1100px, 96vw);
+  height: min(92vh, 900px);
+  max-height: 92vh;
+
+  padding: 26px 28px 24px;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 12px;
+}
+
+.modalActions--sticky {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  padding: 14px 0 0;
+  border-top: 1px solid rgba(0,0,0,0.12);
+}
+
+.modalHeader {
+  padding-right: 44px;
+  margin-bottom: 14px;
+}
+
+/* treść modala ma scroll, a nie cały modal */
+.modalBody--large {
+  flex: 1;
+  overflow: auto;
+  padding-right: 10px;
+
+  /* ⬅️ ważne: daj trochę "oddechu" na dole żeby nie kleiło się do akcji */
+  padding-bottom: 18px;
+}
+
+.modal--large .modalTitle {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.modal--large .modalTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.modal--large .noteTag {
+  font-size: 13px;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+.modal--large .modalBody {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.modal--large pre,
+.modal--large code {
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.modalX {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+
+  border: none;
+  background: transparent; 
+
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  color: #333;
+
+  padding: 0;
+}
+
+.modalX:hover {
+  color: #000;
+}
+
+.modalTitle {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.modalTags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.modalBody {
+  white-space: pre-wrap;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.modalClose, .modalSave {
+  height: 38px;
+  padding: 0 14px;
+  border: 1px solid #333;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.modalClose.btnSlide {
+  --hover-bg: #2f2f2f;
+  --hover-color: #fff;
+}
+
+.modalSave {
+  background: #2f2f2f;
+  color: #fff;
+  border-color: #2f2f2f;
+}
+
+.modalSave.btnSlide {
+  --hover-bg: #ffffff;
+  --hover-color: #2f2f2f;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.textarea--modal {
+  height: 280px;
+}
+
+.profileModal .modalBody--large {
+  padding: 20px 22px 18px;
+}
+
+.profileHeader {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.profileAvatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: #2f2f2f;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 20px;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+}
+
+.profileName {
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.profileSub {
+  font-size: 13px;
+  opacity: 0.7;
+  margin-top: 4px;
+}
+
+.profileSection {
+  border-top: 1px solid rgba(0,0,0,0.10);
+  padding-top: 14px;
+  margin-top: 14px;
+}
+
+.profileSectionTitle {
+  font-size: 14px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.profileStatsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.profileStat {
+  border: 1px solid rgba(0,0,0,0.10);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: rgba(0,0,0,0.02);
+}
+
+.profileStatLabel {
+  font-size: 12px;
+  opacity: 0.75;
+  margin-bottom: 6px;
+}
+
+.profileStatValue {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.profileRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(0,0,0,0.12);
+}
+
+.profileRow:last-child {
+  border-bottom: none;
+}
+
+.profileRowLabel {
+  font-size: 12.5px;
+  opacity: 0.75;
+}
+
+.profileRowValue {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #2f2f2f;
+}
+
+.settingsModal .modalBody--large {
+  padding: 20px 22px 18px;
+}
+
+.settingsSection {
+  border-top: 1px solid rgba(0,0,0,0.10);
+  padding-top: 14px;
+  margin-top: 14px;
+}
+
+.settingsSection:first-child {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.settingsSectionTitle {
+  font-size: 14px;
+  font-weight: 900;
+  margin-bottom: 12px;
+}
+
+.settingsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.settingsRowLeft {
+  min-width: 0;
+}
+
+.settingsLabel {
+  font-weight: 900;
+  font-size: 13.5px;
+}
+
+.settingsHint {
+  margin-top: 4px;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.settingsPreviewHint {
+  margin-top: 10px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.toggle {
+  width: 54px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.22);
+  background: rgba(0,0,0,0.10);
+  position: relative;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+  flex: 0 0 auto;
+}
+
+.toggleKnob {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  transform: translateY(-50%);
+  transition: transform 180ms ease;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+}
+
+.toggle.on {
+  background: rgba(0,0,0,0.80);
+  border-color: rgba(0,0,0,0.80);
+}
+
+.toggle.on .toggleKnob {
+  transform: translate(24px, -50%);
+}

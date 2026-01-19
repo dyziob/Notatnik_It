@@ -4,26 +4,31 @@ export function useLocalStorageNotes(key = "notes") {
   const [notes, setNotes] = useState([]);
   const [hydrated, setHydrated] = useState(false);
 
-  // load once
+  // ⬅️ wczytuj notatki zawsze, gdy zmieni się KEY (czyli użytkownik)
   useEffect(() => {
-  try {
-    const stored = localStorage.getItem("notes");
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed)) setNotes(parsed);
+    setHydrated(false);
+
+    try {
+      const stored = localStorage.getItem(key);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) setNotes(parsed);
+        else setNotes([]);
+      } else {
+        setNotes([]);
+      }
+    } catch (e) {
+      setNotes([]);
+    } finally {
+      setHydrated(true);
     }
-  } catch (e) {
-    // opcjonalnie: localStorage.removeItem("notes");
-  } finally {
-    setHydrated(true); // ⬅️ dopiero teraz pozwalamy na zapis
-  }
-}, []);
+  }, [key]);
 
-useEffect(() => {
-  if (!hydrated) return; // ⬅️ blokada zapisu na starcie
-  localStorage.setItem("notes", JSON.stringify(notes));
-}, [notes, hydrated]);
-
+  // ⬅️ zapisuj do AKTUALNEGO key (nie do "notes")
+  useEffect(() => {
+    if (!hydrated) return;
+    localStorage.setItem(key, JSON.stringify(notes));
+  }, [notes, hydrated, key]);
 
   return [notes, setNotes];
 }

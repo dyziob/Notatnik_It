@@ -2,6 +2,17 @@ import React, { useState } from 'react';
 import '../css/LoginPage.css';
 import { Link, useNavigate } from 'react-router-dom';
 import "highlight.js/styles/github.css";
+import "../css/00-fonts.css";
+import "../css/10-app-layout.css";
+import "../css/20-sidebar.css";
+import "../css/30-board-notes.css";
+import "../css/40-note-card.css";
+import "../css/50-modals.css";
+import "../css/60-confirm-modal.css";
+import "../css/70-segmented.css";
+import "../css/80-codeblocks.css";
+
+
 
 function LoginPage() {
   const navigate = useNavigate();

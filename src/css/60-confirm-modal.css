@@ -1,0 +1,116 @@
+.confirmModal {
+  width: min(520px, 92vw);
+  background: #fff;
+  padding: 28px 28px 24px;
+  position: relative;
+
+  border-radius: 10px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.3);
+
+  text-align: center;
+}
+
+.confirmModal--large {
+  width: min(560px, 94vw);
+}
+
+/* X w rogu */
+.confirmClose {
+  position: absolute;
+  right: 14px;
+  top: 12px;
+
+  border: none;
+  background: transparent;
+
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  color: #333;
+}
+
+.modalClose.btnSlide {
+  --hover-bg: #2f2f2f;
+  --hover-color: #fff;
+}
+
+.confirmClose:hover {
+  color: #000;
+}
+
+/* ikona kosza */
+.confirmIconWrap {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 14px;
+}
+
+.confirmIcon {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+
+  background: #b00000;
+  color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 32px;
+}
+
+/* tytuł */
+.confirmTitle {
+  font-size: 22px;
+  font-weight: 800;
+  color: #b00000;
+  margin-bottom: 10px;
+}
+
+/* opis */
+.confirmText {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #333;
+  margin-bottom: 22px;
+}
+
+/* akcje */
+.confirmActions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.confirmCancel,
+.confirmDelete {
+  height: 42px;
+  min-width: 130px;
+
+  border-radius: 6px;
+  font-weight: 800;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.confirmCancel {
+  border: 1px solid #333;
+  background: #fff;
+}
+
+.confirmCancel.btnSlide {
+  --hover-bg: #2f2f2f;
+  --hover-color: #fff;
+}
+
+.confirmDelete {
+  border: 1px solid #7a0000;
+  background: #b00000;
+  color: #fff;
+}
+
+.confirmDelete.btnSlide {
+  --hover-bg: #d00000;
+  --hover-color: #fff;
+}
