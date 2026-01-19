@@ -173,3 +173,11 @@
   --hover-bg: #d00000;
   --hover-color: #fff;
 }
+
+@media (max-width: 1366px) and (min-width: 901px) {
+  /* gdy masz ustawione notes-md/notes-sm/notes-lg, to i tak zadziała,
+     ale baza notki powinna nie rozpychać siatki */
+  .note {
+    border-radius: 10px;
+  }
+}

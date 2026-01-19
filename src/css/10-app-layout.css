@@ -254,3 +254,67 @@
 .notes-sm .notesGrid { grid-template-columns: repeat(auto-fit, 360px); }
 .notes-md .notesGrid { grid-template-columns: repeat(auto-fit, 425px); }
 .notes-lg .notesGrid { grid-template-columns: repeat(auto-fit, 520px); }
+
+/* ===== Responsive: mniejsze laptopy (bez mobile) ===== */
+@media (max-width: 1366px) and (min-width: 901px) {
+  .layout {
+    grid-template-columns: 320px 1fr; /* było 360px */
+  }
+
+  .brand {
+    font-size: 20px;
+  }
+
+  .topbar {
+    grid-template-columns: 200px 1fr 64px;
+  }
+
+  .topbar-input {
+    width: min(640px, 95%);
+  }
+}
+
+@media (min-width: 1920px) {
+  .layout {
+    grid-template-columns: 420px 1fr;
+  }
+
+  .brand {
+    font-size: 26px;
+  }
+
+  .topbar {
+    height: 64px;
+    grid-template-columns: 260px 1fr 72px;
+  }
+
+  .topbar-input {
+    height: 40px;
+    border-radius: 22px;
+    width: min(980px, 95%);
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .layout {
+    grid-template-columns: 480px 1fr;
+  }
+
+  .topbar {
+    height: 72px;
+    grid-template-columns: 300px 1fr 80px;
+  }
+
+  .brand {
+    font-size: 30px;
+  }
+
+  .topbar-input {
+    height: 44px;
+    border-radius: 24px;
+    width: min(1100px, 95%);
+    font-size: 16px;
+  }
+}
+

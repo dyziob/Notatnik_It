@@ -540,3 +540,58 @@
 .toggle.on .toggleKnob {
   transform: translate(24px, -50%);
 }
+
+/* ===== Responsive: mniejsze laptopy (bez mobile) ===== */
+@media (max-width: 1366px) and (min-width: 901px) {
+  .layout {
+    grid-template-columns: 320px 1fr; /* było 360px */
+  }
+
+  .brand {
+    font-size: 20px;
+  }
+
+  .topbar {
+    grid-template-columns: 200px 1fr 64px;
+  }
+
+  .topbar-input {
+    width: min(640px, 95%);
+  }
+}
+
+@media (min-width: 1920px) {
+  .modal--large {
+    width: min(1300px, 92vw);
+    height: min(92vh, 980px);
+    padding: 30px 34px 26px;
+  }
+
+  .modal--large .modalTitle {
+    font-size: 32px;
+  }
+
+  .modal--large .modalBody {
+    font-size: 17px;
+  }
+
+  .modalX {
+    font-size: 32px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .modal--large {
+    width: min(1500px, 90vw);
+    height: min(92vh, 1100px);
+  }
+
+  .modal--large .modalTitle {
+    font-size: 36px;
+  }
+
+  .modal--large .modalBody {
+    font-size: 18px;
+  }
+}
+

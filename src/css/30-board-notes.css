@@ -37,3 +37,40 @@
   gap: 80px;
   justify-content: start;
 }
+
+@media (max-width: 1366px) and (min-width: 901px) {
+  .board {
+    padding: 14px;
+  }
+
+  .notesGrid {
+    /* było: 425px + gap 80px */
+    grid-template-columns: repeat(auto-fit, 380px);
+    gap: 48px;
+  }
+}
+
+/* ===== Duże ekrany / TV ===== */
+@media (min-width: 1920px) {
+  .board {
+    padding: 24px;
+  }
+
+  .notesGrid {
+    grid-template-columns: repeat(auto-fit, 520px);
+    gap: 90px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .board {
+    padding: 28px;
+  }
+
+  .notesGrid {
+    grid-template-columns: repeat(auto-fit, 600px);
+    gap: 110px;
+  }
+}
+
+
