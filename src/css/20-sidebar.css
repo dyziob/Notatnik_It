@@ -2,7 +2,9 @@
 .sidebar {
   border-right: 1px solid #cfcfcf;
   padding: 14px 14px 18px;
-  overflow: auto;
+  overflow: visible;
+  position: relative;
+  z-index: 20;
 }
 
 .sidebar-title {
@@ -15,6 +17,107 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+/* ===== Help icon przy labelach ===== */
+.label--withHelp {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* kółko z ? */
+.helpIcon {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 12px;
+  font-weight: 900;
+  cursor: help;
+
+  background: rgba(0,0,0,0.08);
+  color: #222;
+
+  transition: background 120ms ease;
+}
+
+.helpIcon:hover {
+  background: rgba(0,0,0,0.15);
+}
+
+/* tooltip */
+.helpTooltip {
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+
+  min-width: 240px;
+  max-width: 280px;
+
+  padding: 12px 14px;
+  border-radius: 10px;
+
+  background: #1e1e1e;
+  color: #fff;
+
+  font-size: 12.5px;
+  line-height: 1.45;
+
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.25);
+
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+/* strzałka */
+.helpTooltip::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  border-width: 6px 6px 6px 0;
+  border-style: solid;
+  border-color: transparent #1e1e1e transparent transparent;
+}
+
+
+/* pokazuj tooltip */
+.helpIcon:hover .helpTooltip,
+.helpIcon:focus .helpTooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(2px);
+}
+
+
+/* ===== Dark mode ===== */
+#MainApp.theme-dark .helpIcon {
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+}
+
+#MainApp.theme-dark .helpIcon:hover {
+  background: rgba(255,255,255,0.22);
+}
+
+#MainApp.theme-dark .helpTooltip {
+  background: #0f1115;
+}
+
+#MainApp.theme-dark .helpTooltip::before {
+  border-color: transparent #0f1115 transparent transparent;
 }
 
 .field .label {
@@ -43,7 +146,14 @@
 
 .colors {
   display: flex;
-  gap: 10px;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 6px 0 10px 4px;
+}
+
+.colorsModal {
+  display: flex;
+  gap: 35px;
   flex-wrap: wrap;
   padding: 6px 0 10px 4px;
 }
@@ -137,6 +247,129 @@
   margin-left: 6px;
   opacity: 0.9;
 }
+
+/* input + plus obok */
+.tagInputRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tagPlusBtn {
+  width: 36px;
+  height: 32px;
+  border: 1px solid #bdbdbd;
+  background: #fff;
+  font-weight: 900;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* modal tagów */
+.modal--tag {
+  width: min(720px, 92vw);
+  max-height: 82vh;
+  overflow: auto;
+  position: relative;
+}
+
+.tagModalTop {
+  margin-top: 10px;
+}
+
+.tagModalLabel {
+  font-size: 13px;
+  font-weight: 800;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.tagModalInputRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.tagModalAddBtn {
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid #333;
+  background: #2f2f2f;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.tagModalEmpty {
+  font-size: 13px;
+  color: #555;
+  margin-top: 6px;
+}
+
+/* DARK THEME (jeśli używasz) */
+#MainApp.theme-dark .tagPlusBtn {
+  background: #0f1115;
+  border-color: rgba(255,255,255,0.16);
+  color: #fff;
+}
+
+#MainApp.theme-dark .modal--tag {
+  background: #151826;
+  color: #fff;
+  border-color: rgba(255,255,255,0.14);
+}
+
+#MainApp.theme-dark .tagModalLabel {
+  color: rgba(255,255,255,0.82);
+}
+
+#MainApp.theme-dark .tagModalAddBtn {
+  background: #ffffff;
+  color: #151826;
+  border-color: rgba(255,255,255,0.25);
+}
+
+
+/* ===== Sidebar: label + licznik ===== */
+.labelRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.charCount {
+  font-size: 12px;
+  font-weight: 800;
+  opacity: 0.65;
+}
+
+/* ===== Sidebar: error message ===== */
+.formError {
+  margin-top: 6px;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(176, 0, 0, 0.35);
+  background: rgba(176, 0, 0, 0.12);
+
+  color: #b00000;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+/* w dark mode też ma być czytelne */
+#MainApp.theme-dark .formError {
+  color: #ff7a7a;
+  border-color: rgba(255, 122, 122, 0.35);
+  background: rgba(255, 122, 122, 0.12);
+}
+
 
 @media (min-width: 1920px) {
   .sidebar {

@@ -35,7 +35,7 @@ export default function Topbar({ query, setQuery, profileStats, onOpenSettings }
   return (
     <>
       <header className="topbar">
-        <div className="brand">Notatnik It</div>
+        <div className="brand">Notatnik IT</div>
 
         <div className="topbar-search">
           <input

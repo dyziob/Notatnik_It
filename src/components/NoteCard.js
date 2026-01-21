@@ -1,7 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import NoteContent from "./NoteContent";
 
-
 export default function NoteCard({ note, onView, onEdit, onDelete }) {
   const bodyRef = useRef(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
@@ -10,17 +9,19 @@ export default function NoteCard({ note, onView, onEdit, onDelete }) {
     const el = bodyRef.current;
     if (!el) return;
     const overflowing =
-      el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1;
+      el.scrollHeight > el.clientHeight + 1 ||
+      el.scrollWidth > el.clientWidth + 1;
     setIsOverflowing(overflowing);
   };
+
+  const measureKey = `${note.title ?? ""}||${note.content ?? ""}||${note.tags?.join(",") ?? ""}||${note.color ?? ""}||${note.contentMode ?? "auto"}`;
 
   useLayoutEffect(() => {
     measure();
     const t = setTimeout(measure, 0);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [note.title, note.content, note.tags?.join(","), note.color]);
-
+  }, [measureKey]);
   useEffect(() => {
     const onResize = () => measure();
     window.addEventListener("resize", onResize);
@@ -38,8 +39,25 @@ export default function NoteCard({ note, onView, onEdit, onDelete }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const open = () => onView(note);
+
+  const onCardKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      open();
+    }
+  };
+
   return (
-    <article className="note" style={{ background: note.color }}>
+    <article
+      className="note"
+      style={{ background: note.color }}
+      role="button"
+      tabIndex={0}
+      aria-label={`Otwórz notatkę: ${note.title}`}
+      onClick={open}
+      onKeyDown={onCardKeyDown} 
+    >
       <div className="noteHeader">
         <div className="noteTitle">{note.title}</div>
       </div>
@@ -49,14 +67,19 @@ export default function NoteCard({ note, onView, onEdit, onDelete }) {
       {note.tags?.length > 0 && (
         <div className="noteTags">
           {note.tags.map((t) => (
-            <span key={t} className="noteTag">{t}</span>
+            <span key={t} className="noteTag">
+              {t}
+            </span>
           ))}
         </div>
       )}
 
-
       <div ref={bodyRef} className="noteBody">
-        <NoteContent text={note.content} mode={note.contentMode || "text"} enableCopy={false} />
+        <NoteContent
+          text={note.content}
+          mode={note.contentMode || "text"}
+          enableCopy={false}
+        />
       </div>
 
       <div className="noteFooter">
@@ -65,22 +88,44 @@ export default function NoteCard({ note, onView, onEdit, onDelete }) {
         </span>
 
         {isOverflowing && (
-        <div className="noteMoreIcon" title="Notatka zawiera więcej treści">
-          ⋯
-        </div>
-      )}
+          <div className="noteMoreIcon" title="Notatka zawiera więcej treści">
+            ⋯
+          </div>
+        )}
       </div>
 
+      {/* ✅ overlay nie odpala clicka karty */}
       <div className="noteOverlay">
-        <button type="button" className="overlayBtn btnSlide" onClick={() => onView(note)}>
+        <button
+          type="button"
+          className="overlayBtn btnSlide"
+          onClick={(e) => {
+            e.stopPropagation();     // ✅ nie otwieraj notatki
+            onView(note);
+          }}
+        >
           👁 Przeglądaj notatkę
         </button>
 
-        <button type="button" className="overlayBtn btnSlide" onClick={() => onEdit(note)}>
+        <button
+          type="button"
+          className="overlayBtn btnSlide"
+          onClick={(e) => {
+            e.stopPropagation();
+            onEdit(note);
+          }}
+        >
           ✏️ Edytuj notatkę
         </button>
 
-        <button type="button" className="overlayBtn danger btnSlide" onClick={() => onDelete(note)}>
+        <button
+          type="button"
+          className="overlayBtn danger btnSlide"
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(note);
+          }}
+        >
           🗑 Usuń notatkę
         </button>
       </div>

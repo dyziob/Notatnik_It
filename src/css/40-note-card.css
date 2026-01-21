@@ -5,6 +5,7 @@
   border: none;
   padding: 14px 14px 12px;
   background: #fff;
+  cursor: pointer;
 
   border-radius: 8px;
 
@@ -87,6 +88,10 @@
   font-variant-ligatures: contextual;
   font-feature-settings: "liga" 1, "calt" 1;
   font-weight: 500;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow: hidden; 
 }
 
 .noteFooter {

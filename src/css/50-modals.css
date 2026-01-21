@@ -541,6 +541,54 @@
   transform: translate(24px, -50%);
 }
 
+/* ===== TAG MODAL ===== */
+.tagModal {
+  width: min(720px, 92vw);
+  max-height: 86vh;
+  overflow: auto;
+  background: #fff;
+  border: 1px solid #cfcfcf;
+  padding: 18px;
+  position: relative;
+}
+
+.tagModalTitle {
+  font-size: 18px;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.tagModalSection {
+  margin-bottom: 16px;
+}
+
+.tagModalAddRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.tagModalAddBtn {
+  height: 38px;
+  padding: 0 14px;
+  border: 1px solid #333;
+  background: #000;
+  cursor: pointer;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.tagModalActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.tagModalEmpty {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
 /* ===== Responsive: mniejsze laptopy (bez mobile) ===== */
 @media (max-width: 1366px) and (min-width: 901px) {
   .layout {

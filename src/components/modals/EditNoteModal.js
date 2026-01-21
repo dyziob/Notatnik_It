@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import TagModal from "../modals/TagModal"; // <-- popraw ścieżkę jeśli masz inaczej
 
 const DEFAULT_TAGS = [
   "JavaScript", "Python", "Java", "C#", "C++", "PHP", "Swift", "TypeScript",
@@ -16,6 +17,8 @@ const NOTE_COLORS = [
   { key: "orange", hex: "#f2b37a" },
 ];
 
+const TITLE_MAX = 40;
+
 export default function EditNoteModal({ note, onClose, onSave }) {
   const [draft, setDraft] = useState(null);
 
@@ -23,9 +26,16 @@ export default function EditNoteModal({ note, onClose, onSave }) {
   const [tagInput, setTagInput] = useState("");
   const [showTagHints, setShowTagHints] = useState(false);
 
+  // modal tagów (+)
+  const [tagModalOpen, setTagModalOpen] = useState(false);
+
+  // walidacja
+  const [error, setError] = useState("");
+
   useEffect(() => {
     if (!note) {
       setDraft(null);
+      setError("");
       return;
     }
 
@@ -40,6 +50,8 @@ export default function EditNoteModal({ note, onClose, onSave }) {
 
     setTagInput("");
     setShowTagHints(false);
+    setTagModalOpen(false);
+    setError("");
   }, [note]);
 
   const tagHints = useMemo(() => {
@@ -84,6 +96,17 @@ export default function EditNoteModal({ note, onClose, onSave }) {
     }
   };
 
+  const save = () => {
+    const t = (draft.title || "").trim();
+    if (!t) {
+      setError("Tytuł jest wymagany.");
+      return;
+    }
+
+    setError("");
+    onSave({ ...draft, title: t });
+  };
+
   return (
     <div className="modalBackdrop" onClick={onClose}>
       <div
@@ -99,76 +122,99 @@ export default function EditNoteModal({ note, onClose, onSave }) {
           <div className="modalTitle">Edytuj notatkę</div>
         </div>
 
-        {/* BODY scrolluje, footer zostaje na dole */}
+        {/* BODY */}
         <div className="modalBody modalBody--large">
           <div className="editGrid">
             {/* LEWA KOLUMNA */}
             <div className="editLeft">
               {/* Tytuł */}
               <label className="field field--title">
-                <div className="label">Tytuł</div>
+                <div className="labelRow">
+                  <div className="label">Tytuł</div>
+                  <div className="charCount">
+                    {(draft.title || "").length}/{TITLE_MAX}
+                  </div>
+                </div>
+
                 <input
                   className="input"
                   value={draft.title}
-                  onChange={(e) =>
-                    setDraft((p) => ({ ...p, title: e.target.value }))
-                  }
+                  maxLength={TITLE_MAX}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setDraft((p) => ({ ...p, title: v }));
+                    if (error) setError("");
+                  }}
+                  placeholder="Wpisz tytuł..."
                 />
               </label>
 
-              {/* Tryb treści */}
+              {/* Tryb treści + tooltip */}
               <div className="field field--slider">
-                <div className="label">Tryb treści</div>
+                <div className="label label--withHelp">
+                  Tryb treści
+                  <span className="helpIcon" tabIndex={0}>
+                    ?
+                    <span className="helpTooltip">
+                      <strong>Tekst</strong> – zwykła notatka bez formatowania.<br /><br />
+                      <strong>Auto</strong> – aplikacja spróbuje wykryć, czy to kod i sformatuje go automatycznie. Jeśli nie wykryje kodu, zostawi zwykły tekst.<br /><br />
+                      <strong>Kod</strong> – zawsze traktuje treść jako kod (kolory, czcionka).
+                    </span>
+                  </span>
+                </div>
+
                 <div className="segmented" data-active={draft.contentMode}>
                   <div className="segIndicator" aria-hidden="true" />
+
                   <button
                     type="button"
-                    className={
-                      "segBtn" + (draft.contentMode === "text" ? " active" : "")
-                    }
-                    onClick={() =>
-                      setDraft((p) => ({ ...p, contentMode: "text" }))
-                    }
+                    className={"segBtn" + (draft.contentMode === "text" ? " active" : "")}
+                    onClick={() => setDraft((p) => ({ ...p, contentMode: "text" }))}
                   >
                     Tekst
                   </button>
 
                   <button
                     type="button"
-                    className={
-                      "segBtn" + (draft.contentMode === "auto" ? " active" : "")
-                    }
-                    onClick={() =>
-                      setDraft((p) => ({ ...p, contentMode: "auto" }))
-                    }
+                    className={"segBtn" + (draft.contentMode === "auto" ? " active" : "")}
+                    onClick={() => setDraft((p) => ({ ...p, contentMode: "auto" }))}
                   >
                     Auto
                   </button>
 
                   <button
                     type="button"
-                    className={
-                      "segBtn" + (draft.contentMode === "code" ? " active" : "")
-                    }
-                    onClick={() =>
-                      setDraft((p) => ({ ...p, contentMode: "code" }))
-                    }
+                    className={"segBtn" + (draft.contentMode === "code" ? " active" : "")}
+                    onClick={() => setDraft((p) => ({ ...p, contentMode: "code" }))}
                   >
                     Kod
                   </button>
                 </div>
               </div>
 
-              {/* Tagi */}
+              {/* Tagi + plus + modal */}
               <div className="field">
                 <div className="label">Tagi</div>
-                <input
-                  className="input"
-                  value={tagInput}
-                  onChange={handleTagTyping}
-                  onKeyDown={handleTagKeyDown}
-                  placeholder="Wpisz tag i Enter (albo wybierz z podpowiedzi)"
-                />
+
+                <div className="tagInputRow">
+                  <input
+                    className="input"
+                    value={tagInput}
+                    onChange={handleTagTyping}
+                    onKeyDown={handleTagKeyDown}
+                    placeholder="np. JavaScript lub dodaj własne z pomocą +"
+                  />
+
+                  <button
+                    type="button"
+                    className="tagPlusBtn"
+                    onClick={() => setTagModalOpen(true)}
+                    aria-label="Dodaj tagi"
+                    title="Dodaj swoje tagi"
+                  >
+                    +
+                  </button>
+                </div>
 
                 {showTagHints && tagHints.length > 0 && (
                   <div className="tagHints">
@@ -202,19 +248,30 @@ export default function EditNoteModal({ note, onClose, onSave }) {
                     ))}
                   </div>
                 )}
+
+                <TagModal
+                  open={tagModalOpen}
+                  onClose={() => setTagModalOpen(false)}
+                  selectedTags={draft.tags}
+                  setSelectedTags={(updater) =>
+                    setDraft((prev) => ({
+                      ...prev,
+                      tags: typeof updater === "function" ? updater(prev.tags) : updater,
+                    }))
+                  }
+                  defaultTags={DEFAULT_TAGS}
+                />
               </div>
 
               {/* Kolor */}
               <div className="field">
                 <div className="label">Kolor notatki</div>
-                <div className="colors">
+                <div className="colorsModal">
                   {NOTE_COLORS.map((c) => (
                     <button
                       type="button"
                       key={c.key}
-                      className={
-                        "colorDot" + (draft.color === c.hex ? " active" : "")
-                      }
+                      className={"colorDot" + (draft.color === c.hex ? " active" : "")}
                       style={{ background: c.hex }}
                       onClick={() => setDraft((p) => ({ ...p, color: c.hex }))}
                       aria-label={c.key}
@@ -223,8 +280,8 @@ export default function EditNoteModal({ note, onClose, onSave }) {
                   ))}
                 </div>
               </div>
-              
-              {/* MINI PODGLĄD NOTATKI */}
+
+              {/* MINI PODGLĄD */}
               <div className="miniPreviewWrap">
                 <div className="miniPreviewTitle">Podgląd notatki</div>
 
@@ -253,7 +310,6 @@ export default function EditNoteModal({ note, onClose, onSave }) {
                       .join("\n")}
                   </div>
 
-                  {/* Ikonka „więcej treści” – zawsze w rogu, ale pokazuj tylko gdy jest dużo tekstu */}
                   {(draft.content || "").length > 220 && (
                     <div className="miniMoreIcon" title="Notatka zawiera więcej treści">
                       …
@@ -270,9 +326,7 @@ export default function EditNoteModal({ note, onClose, onSave }) {
                 <textarea
                   className="textarea textarea--editBig"
                   value={draft.content}
-                  onChange={(e) =>
-                    setDraft((p) => ({ ...p, content: e.target.value }))
-                  }
+                  onChange={(e) => setDraft((p) => ({ ...p, content: e.target.value }))}
                 />
               </label>
             </div>
@@ -284,9 +338,14 @@ export default function EditNoteModal({ note, onClose, onSave }) {
           <button className="modalClose btnSlide" onClick={onClose}>
             Anuluj
           </button>
-          <button className="modalSave btnSlide" onClick={() => onSave(draft)}>
-            Zapisz
-          </button>
+
+          <div className="modalRightActions">
+            {error && <div className="formError formError--inline">{error}</div>}
+
+            <button className="modalSave btnSlide" onClick={save}>
+              Zapisz
+            </button>
+          </div>
         </div>
       </div>
     </div>

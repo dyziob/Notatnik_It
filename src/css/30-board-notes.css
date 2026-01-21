@@ -2,6 +2,8 @@
 .board {
   padding: 18px;
   overflow: auto;
+  z-index: 1;
+  position: relative;
 }
 
 .btnSlide {
