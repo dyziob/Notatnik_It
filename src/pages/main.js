@@ -1,6 +1,8 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 import SettingsModal from "../components/modals/SettingsModal";
+
 import "../css/00-fonts.css";
 import "../css/10-app-layout.css";
 import "../css/20-sidebar.css";
@@ -18,8 +20,8 @@ import NotesGrid from "../components/NotesGrid";
 import ViewNoteModal from "../components/modals/ViewNoteModal";
 import EditNoteModal from "../components/modals/EditNoteModal";
 import ConfirmDeleteModal from "../components/modals/ConfirmDeleteModal";
-import "highlight.js/styles/github.css";
 
+import "highlight.js/styles/github.css";
 import { useLocalStorageNotes } from "../hooks/useLocalStorageNotes";
 
 const DEFAULT_TAGS = [
@@ -39,15 +41,17 @@ const NOTE_COLORS = [
 ];
 
 export default function Main() {
-  const [query, setQuery] = useState("");
-  const [openSettings, setOpenSettings] = useState(false);
   const navigate = useNavigate();
 
+  const [query, setQuery] = useState("");
+  const [openSettings, setOpenSettings] = useState(false);
+
+  // ===== USER / KEYS =====
   const user = localStorage.getItem("authUser");
   const storageKey = user ? `notes_${user}` : "notes_guest";
-
   const settingsKey = user ? `settings_${user}` : "settings_guest";
 
+  // ===== SETTINGS (theme + noteSize) =====
   const [appSettings, setAppSettings] = useState(() => {
     try {
       const raw = localStorage.getItem(settingsKey);
@@ -61,32 +65,53 @@ export default function Main() {
     }
   });
 
+  // ===== MOBILE DETECTION + MOBILE SIDEBAR =====
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 760px)");
+    const apply = () => setIsMobile(mq.matches);
+
+    apply();
+    mq.addEventListener?.("change", apply);
+    return () => mq.removeEventListener?.("change", apply);
+  }, []);
+
+  // jeśli przestajesz być mobile, zamknij sheet
+  useEffect(() => {
+    if (!isMobile) setMobileSidebarOpen(false);
+  }, [isMobile]);
+
+  // ===== NOTES =====
   const [notes, setNotes] = useLocalStorageNotes(storageKey);
 
+  // ===== MODALS =====
   const [openNote, setOpenNote] = useState(null);
   const [editNote, setEditNote] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
+  // ===== LOGOUT =====
   const handleLogout = () => {
     localStorage.removeItem("authUser");
-
     setQuery("");
-
     navigate("/", { replace: true });
   };
 
+  // ===== FILTER =====
   const filteredNotes = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return notes;
 
     return notes.filter((n) => {
-      const inTitle = n.title.toLowerCase().includes(q);
-      const inContent = n.content.toLowerCase().includes(q);
-      const inTags = n.tags.some((t) => t.toLowerCase().includes(q));
+      const inTitle = (n.title || "").toLowerCase().includes(q);
+      const inContent = (n.content || "").toLowerCase().includes(q);
+      const inTags = (n.tags || []).some((t) => (t || "").toLowerCase().includes(q));
       return inTitle || inContent || inTags;
     });
   }, [notes, query]);
 
+  // ===== PROFILE STATS (do Topbar) =====
   const profileStats = useMemo(() => {
     const notesCount = notes.length;
 
@@ -112,18 +137,18 @@ export default function Main() {
     };
   }, [notes]);
 
-
+  // ===== CRUD =====
   const handleAddNote = ({ title, content, tags, color, contentMode }) => {
     const now = new Date();
-      const newNote = {
-        id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()),
-        title,
-        content,
-        tags,
-        color,
-        contentMode: contentMode || "auto", // "text" | "auto" | "code"
-        createdAt: now.toISOString(),
-      };
+    const newNote = {
+      id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()),
+      title,
+      content,
+      tags: Array.isArray(tags) ? tags : [],
+      color,
+      contentMode: contentMode || "auto", // "text" | "auto" | "code"
+      createdAt: now.toISOString(),
+    };
     setNotes((prev) => [newNote, ...prev]);
   };
 
@@ -139,6 +164,14 @@ export default function Main() {
     setEditNote(null);
   };
 
+  // ✅ FAB ma się ukrywać, gdy jakikolwiek overlay jest otwarty
+  const isAnyOverlayOpen =
+    mobileSidebarOpen ||
+    !!openNote ||
+    !!editNote ||
+    !!deleteTarget ||
+    openSettings;
+
   return (
     <div id="MainApp" className={`theme-${appSettings.theme} notes-${appSettings.noteSize}`}>
       <Topbar
@@ -146,23 +179,69 @@ export default function Main() {
         setQuery={setQuery}
         profileStats={profileStats}
         onOpenSettings={() => setOpenSettings(true)}
-        onLogout={handleLogout} />
+        onLogout={handleLogout}
+      />
 
       <div className="layout">
-        <SidebarForm
-          defaultTags={DEFAULT_TAGS}
-          noteColors={NOTE_COLORS}
-          onAddNote={handleAddNote}
-        />
+        {/* ✅ DESKTOP: normalny sidebar */}
+        {!isMobile && (
+          <SidebarForm
+            defaultTags={DEFAULT_TAGS}
+            noteColors={NOTE_COLORS}
+            onAddNote={handleAddNote}
+          />
+        )}
 
         <NotesGrid
           notes={filteredNotes}
           onView={(note) => setOpenNote(note)}
           onEdit={(note) => setEditNote(note)}
           onDelete={(note) => requestDelete(note)}
+          isMobile={isMobile}
         />
       </div>
 
+      {/* ✅ MOBILE: FAB + bottom sheet z SidebarForm */}
+      {isMobile && (
+        <>
+          <button
+            className={"fabAdd" + (isAnyOverlayOpen ? " hidden" : "")}
+            type="button"
+            aria-label="Dodaj notatkę"
+            onClick={() => setMobileSidebarOpen(true)}
+          >
+            +
+          </button>
+
+          {mobileSidebarOpen && (
+            <div className="sheetBackdrop" onClick={() => setMobileSidebarOpen(false)}>
+              <div className="sheet" onClick={(e) => e.stopPropagation()}>
+                <div className="sheetHeader">
+                  <div className="sheetTitle">Dodaj notatkę</div>
+                  <button
+                    className="sheetClose"
+                    onClick={() => setMobileSidebarOpen(false)}
+                    aria-label="Zamknij"
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <SidebarForm
+                  defaultTags={DEFAULT_TAGS}
+                  noteColors={NOTE_COLORS}
+                  onAddNote={(data) => {
+                    handleAddNote(data);
+                    setMobileSidebarOpen(false); // ✅ po dodaniu zamknij
+                  }}
+                />
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Modale notatek */}
       <ViewNoteModal note={openNote} onClose={() => setOpenNote(null)} />
 
       <EditNoteModal
@@ -177,14 +256,12 @@ export default function Main() {
         onConfirm={confirmDelete}
       />
 
+      {/* Settings */}
       <SettingsModal
         open={openSettings}
         onClose={() => setOpenSettings(false)}
         onApply={(settings) => {
-          // 1) ustaw w stanie aplikacji (od razu zmieni UI)
           setAppSettings(settings);
-
-          // 2) zapisz dla usera (na przyszłość)
           localStorage.setItem(settingsKey, JSON.stringify(settings));
         }}
       />

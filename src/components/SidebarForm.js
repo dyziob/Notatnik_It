@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef} from "react";
 import TagModal from "./modals/TagModal";
+import NoteContent from "./NoteContent";
 
 export default function SidebarForm({
   defaultTags,
@@ -36,6 +37,15 @@ export default function SidebarForm({
 
   const removeTag = (tag) => {
     setSelectedTags((prev) => prev.filter((t) => t !== tag));
+  };
+
+  const taRef = useRef(null);
+  const previewRef = useRef(null);
+
+  const syncScroll = () => {
+    if (!taRef.current || !previewRef.current) return;
+    previewRef.current.scrollTop = taRef.current.scrollTop;
+    previewRef.current.scrollLeft = taRef.current.scrollLeft;
   };
 
   const resetForm = () => {
@@ -151,15 +161,32 @@ export default function SidebarForm({
           </div>
         </div>
 
-        <label className="field">
+        <div className="field">
           <div className="label">Treść notatki</div>
-          <textarea
-            className="textarea"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Podaj treść..."
-          />
-        </label>
+
+          <div className={"smartTA " + (contentMode !== "text" ? "smartTA--code" : "")}>
+            {/* PODGLĄD (kolorowany) */}
+            <div className="smartTA__preview" ref={previewRef} aria-hidden="true">
+              <NoteContent
+                text={content || " "}
+                mode={contentMode}
+                enableCopy={false}
+              />
+            </div>
+
+            {/* PRAWDZIWE textarea (przezroczyste) */}
+            <textarea
+              ref={taRef}
+              className="smartTA__input"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              onScroll={syncScroll}
+              placeholder="Podaj treść..."
+              spellCheck={false}
+            />
+          </div>
+        </div>
+
 
         <label className="field">
           <div className="label">Tagi</div>

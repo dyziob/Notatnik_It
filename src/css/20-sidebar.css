@@ -153,7 +153,7 @@
 
 .colorsModal {
   display: flex;
-  gap: 35px;
+  gap: 25px;
   flex-wrap: wrap;
   padding: 6px 0 10px 4px;
 }
@@ -421,6 +421,204 @@
     width: 38px;
     height: 38px;
     border-radius: 14px;
+  }
+}
+
+/* ===== SMART TEXTAREA ===== */
+.smartTA{
+  position: relative;
+  width: 95%;
+  height: 360px;
+  border: 1px solid #bdbdbd;
+  background: #fff;
+  box-sizing: border-box;
+  overflow: hidden; /* ✅ żeby nic nie robiło 2. scrolla */
+}
+
+/* ✅ WSPÓLNA BAZA 1:1 dla input + preview (KLUCZ) */
+.smartTA__input,
+.smartTA__preview{
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.45;
+  letter-spacing: 0;
+  tab-size: 2;
+
+  padding: 10px 12px;
+  box-sizing: border-box;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* preview (kolorowany tekst) */
+.smartTA__preview{
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  pointer-events: none;
+
+  /* ✅ preview NIE scrolluje (tylko textarea scrolluje) */
+  overflow: hidden;
+
+  width: 100%;
+  height: 100%;
+
+  /* ✅ preview ma normalny kolor tekstu */
+  color: #111;
+}
+
+/* ✅ ważne: pre/code też muszą być “płaskie” i bez własnego scrolla */
+.smartTA__preview pre,
+.smartTA__preview code{
+  margin: 0;
+  padding: 0;
+
+  /* ✅ żadnych własnych scrollerów */
+  overflow: visible;
+
+  /* ✅ to samo zawijanie co textarea */
+  white-space: inherit;
+  word-break: inherit;
+
+  max-width: 100%;
+  display: block;
+}
+
+/* textarea (kursor + input) */
+.smartTA__input{
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  height: 100%;
+
+  /* ✅ KLUCZ: przebij globalne .textarea */
+  background: transparent !important;
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+
+  resize: none;
+
+  /* ✅ scroll TYLKO TU */
+  overflow: auto;
+
+  /* ✅ ukrywamy tekst, zostaje caret */
+  color: transparent;
+  caret-color: #111;
+
+  pointer-events: auto;
+}
+
+/* placeholder */
+.smartTA__input::placeholder{
+  color: rgba(0,0,0,0.45);
+}
+
+/* ✅ code mode: identycznie dla obu */
+.smartTA--code .smartTA__input,
+.smartTA--code .smartTA__preview{
+  font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.45; /* ✅ zostaw to samo, żeby nie rozjechać kursora */
+}
+
+/* dark */
+#MainApp.theme-dark .smartTA{
+  background: #0f1115;
+  border-color: rgba(255,255,255,0.16);
+}
+
+#MainApp.theme-dark .smartTA__input{
+  caret-color: #fff;
+}
+
+#MainApp.theme-dark .smartTA__preview{
+  color: #e9e9ee; /* ✅ tekst widoczny w dark mode */
+}
+
+#MainApp.theme-dark .smartTA__input::placeholder{
+  color: rgba(255,255,255,0.5);
+}
+
+/* ===== MOBILE SHEET: SidebarForm ma działać jak normalny formularz ===== */
+
+/* Sam sheet powinien scrollować, nie sidebar */
+.sheet {
+  max-height: 92vh;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* SidebarForm w sheet'cie NIE ma być "sidebar-em" */
+.sheet .sidebar{
+  width: 100%;
+  height: auto !important;
+  max-height: none !important;
+  position: static !important;
+  overflow: visible !important;
+
+  background: transparent;
+  border-right: 0;
+  box-shadow: none;
+  padding: 0;            /* sheet ma swój padding */
+  margin: 0;
+}
+
+/* Ukryj tytuł sidebara, bo sheet ma własny nagłówek */
+.sheet .sidebar-title{
+  display: none;
+}
+
+/* Daj oddech formularzowi w środku sheet'a */
+.sheet .form{
+  padding: 14px 14px 18px;
+}
+
+/* Pole textarea w sheet (żeby było używalne) */
+.sheet .textarea{
+  min-height: 180px;
+}
+
+/* Tag hints i dropdowny niech nie wychodzą poza sheet */
+.sheet .tagHints{
+  position: relative;
+  z-index: 5;
+}
+
+/* Kolory i przycisk "Dodaj" niech będą pełnej szerokości */
+.sheet .addBtn{
+  width: 100%;
+}
+
+/* ===== FIX: SIDEBAR W SHEET NA MOBILE ===== */
+@media (max-width: 760px) {
+  /* w sheet chcemy pełną szerokość pól */
+  .sheet .input,
+  .sheet .textarea,
+  .sheet .smartTA {
+    width: 100% !important;
+  }
+
+  /* zmniejszamy wysokość edytora, żeby nie wyglądało jak „pusto” */
+  .sheet .textarea {
+    height: 180px !important;
+  }
+
+  .sheet .smartTA {
+    height: 220px !important;
+  }
+
+  /* dropdown podpowiedzi tagów nad resztą */
+  .sheet .tagHints {
+    z-index: 50;
+  }
+
+  /* daj trochę miejsca na dole, żeby przycisk nie był przyklejony */
+  .sheet .form {
+    padding-bottom: 26px;
   }
 }
 

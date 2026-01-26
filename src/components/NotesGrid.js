@@ -1,7 +1,7 @@
 import React from "react";
 import NoteCard from "./NoteCard";
 
-export default function NotesGrid({ notes, onView, onEdit, onDelete }) {
+export default function NotesGrid({ notes, onView, onEdit, onDelete, isMobile, }) {
   return (
     <main className="board">
       <div className="notesGrid">
@@ -12,6 +12,7 @@ export default function NotesGrid({ notes, onView, onEdit, onDelete }) {
             onView={onView}
             onEdit={onEdit}
             onDelete={onDelete}
+            isMobile={isMobile}
           />
         ))}
       </div>

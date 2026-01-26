@@ -1,3 +1,7 @@
+html, body {
+  overflow-x: hidden;
+}
+
 /* App frame */
 #MainApp {
   height: 100vh;
@@ -5,6 +9,7 @@
   flex-direction: column;
   background: #ffffff;
   font-family: 'Inter - semi bold', sans-serif;
+  overflow-x: hidden;
 }
 
 /* Top bar */
@@ -246,14 +251,17 @@
 }
 
 /* ===== NOTE SIZE ===== */
-.notes-sm .note { height: 360px; min-height: 360px; }
+.notes-sm .note { height: 340px; min-height: 340px; }
 .notes-md .note { height: 425px; min-height: 425px; }
 .notes-lg .note { height: 520px; min-height: 520px; }
 
 /* jeśli używasz grid repeat(auto-fit, 425px) — też możesz zrobić per size */
-.notes-sm .notesGrid { grid-template-columns: repeat(auto-fit, 360px); }
+.notes-sm .notesGrid { grid-template-columns: repeat(auto-fit, 340px); }
 .notes-md .notesGrid { grid-template-columns: repeat(auto-fit, 425px); }
 .notes-lg .notesGrid { grid-template-columns: repeat(auto-fit, 520px); }
+
+.notes-sm .note { padding: 12px 12px 10px; }
+.notes-sm .noteTitle { font-size: 24px; }
 
 /* ===== Responsive: mniejsze laptopy (bez mobile) ===== */
 @media (max-width: 1366px) and (min-width: 901px) {
@@ -317,4 +325,315 @@
     font-size: 16px;
   }
 }
+/* ===== MOBILE UI ===== */
+@media (max-width: 760px) {
+  /* sidebar znika w układzie */
+  .layout > .sidebar { display: none; }
+
+  /* wyłącz hover overlay na mobile */
+  .noteOverlay { display: none !important; }
+
+  /* notatki full width na mobile */
+  .notesGrid {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+  }
+  
+  .note { width: 100%; }
+}
+
+/* FAB + */
+.fabAdd{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: 0;
+  background: #f36b3b;
+  color: #fff;
+  font-size: 34px;
+  line-height: 0;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+  z-index: 9999;
+
+  /* ✅ animacja */
+  transition: opacity 180ms ease, transform 180ms ease;
+  will-change: opacity, transform;
+}
+
+.fabAdd.hidden{
+  opacity: 0;
+  transform: translateY(10px) scale(0.92);
+  pointer-events: none; /* ✅ nie klikalny gdy ukryty */
+}
+
+/* sheet */
+.sheetBackdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 9998;
+  display: flex;
+  align-items: flex-end;
+}
+
+.sheet{
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100vw;
+  max-height: 88vh;
+  background: #fff;
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 -12px 28px rgba(0,0,0,0.25);
+  overflow: auto;
+  padding: 12px 14px 18px;
+}
+
+.sheetHeader{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 6px 12px;
+}
+
+.sheetTitle{ font-weight: 900; font-size: 18px; }
+.sheetClose{
+  border: 0;
+  background: transparent;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+/* menu ⋮ w notatce */
+.noteKebabWrap{ position: relative; }
+.noteKebab{
+  border: 0;
+  background: transparent;
+  font-size: 22px;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.noteMenu{
+  position: absolute;
+  right: 0;
+  top: 34px;
+  min-width: 160px;
+  background: #1f1f1f;
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 12px 26px rgba(0,0,0,0.35);
+  overflow: hidden;
+  z-index: 20;
+}
+
+.noteMenu button{
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.noteMenu button:hover{
+  background: rgba(255,255,255,0.10);
+}
+
+.noteMenu button.danger{
+  color: #ffb3b3;
+}
+
+@media (max-width: 760px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* menu ⋮ w notatce */
+.noteKebabWrap{ position: relative; }
+
+/* ✅ większe kropki + większy hit-area */
+.noteKebab{
+  border: 0;
+  background: transparent;
+  font-size: 28px;        /* było 22px */
+  padding: 10px 12px;     /* było 6px 8px */
+  line-height: 1;         /* żeby znak ⋮ był wycentrowany */
+  cursor: pointer;
+  border-radius: 10px;    /* przyjemniejsze dotknięcie */
+}
+
+/* opcjonalnie: lekki feedback dotykowy */
+.noteKebab:active{
+  transform: scale(0.96);
+}
+
+/* ✅ większe menu */
+.noteMenu{
+  position: absolute;
+  right: 0;
+  top: 44px;              /* było 34px, bo button jest wyższy */
+  min-width: 210px;       /* było 160px */
+  background: #1f1f1f;
+  color: #fff;
+  border-radius: 14px;    /* było 12px */
+  box-shadow: 0 12px 26px rgba(0,0,0,0.35);
+  overflow: hidden;
+  z-index: 20;
+}
+
+/* ✅ większe przyciski w menu */
+.noteMenu button{
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 14px 14px;     /* było 10px 12px */
+  font-size: 16px;        /* dodajemy */
+  cursor: pointer;
+}
+
+/* opcjonalnie: większe odstępy między emoji a tekstem */
+.noteMenu button{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* wrapper */
+.topbarShell{
+  background: #fff;
+  border-bottom: 1px solid #cfcfcf;
+}
+
+/* ===== DESKTOP vs MOBILE switch ===== */
+.desktopTopbar{ display: grid; }
+.mobileTopbar{ display: none; }
+
+@media (max-width: 760px){
+  .desktopTopbar{ display: none; }
+  .mobileTopbar{ display: block; }
+}
+
+/* ===== MOBILE: header row ===== */
+.mobileTopbarHeader{
+  width: 100%;
+  height: 54px;
+  border: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 22px;
+}
+
+.mobileBrand{ font-weight: 900; }
+
+.mobileCaret{
+  display: inline-block;
+  transition: transform 180ms ease;
+}
+
+/* po rozwinięciu obrót w górę */
+.mobileCaret.up{
+  transform: rotate(180deg);
+}
+
+/* ===== MOBILE: expandable panel ===== */
+.mobileTopbarPanel{
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 220ms ease, opacity 180ms ease;
+  border-top: 1px solid #cfcfcf;
+}
+
+.mobileTopbarPanel.open{
+  max-height: 260px; /* wystarczy na Profil + Search + 2 przyciski */
+  opacity: 1;
+}
+
+/* profil row */
+.mobileProfileRow{
+  width: 100%;
+  height: 52px;
+  border: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 900;
+  font-size: 20px;
+  border-bottom: 1px solid #cfcfcf;
+  cursor: pointer;
+}
+
+.profileIcon{
+  width: 22px;
+  height: 22px;
+  color: #2f2f2f;
+}
+
+/* search row */
+.mobileSearchRow{
+  padding: 10px 12px;
+}
+
+.mobileSearchPill{
+  position: relative;
+}
+
+.mobileSearchInput{
+  width: 100%;
+  height: 40px;
+  border-radius: 999px;
+  padding: 0 44px 0 16px;
+  border: 2px solid rgba(0,0,0,0.20);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.mobileSearchIcon{
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+/* actions (opcjonalne, ale praktyczne na mobile) */
+.mobileActions{
+  display: flex;
+  gap: 10px;
+  padding: 0 12px 12px;
+}
+
+.mobileActionBtn{
+  flex: 1;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.18);
+  background: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.mobileActionBtn.danger{
+  border-color: rgba(176,0,0,0.25);
+  color: #b00000;
+}
+
+
 
