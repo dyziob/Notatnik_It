@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/Notatnik_It/static/css/main.6eb2bad4.css",
+    "main.css": "/Notatnik_It/static/css/main.8b87fbfc.css",
     "main.js": "/Notatnik_It/static/js/main.47cb8cc9.js",
     "static/js/453.117b0875.chunk.js": "/Notatnik_It/static/js/453.117b0875.chunk.js",
     "static/media/logo.png": "/Notatnik_It/static/media/logo.ec012da4bb05bd443a7c.png",
@@ -10,12 +10,12 @@
     "static/media/FiraCode-Regular.ttf": "/Notatnik_It/static/media/FiraCode-Regular.f69e43267ec300690c7c.ttf",
     "static/media/FiraCode-Medium.ttf": "/Notatnik_It/static/media/FiraCode-Medium.74ff6b812423c87a9986.ttf",
     "index.html": "/Notatnik_It/index.html",
-    "main.6eb2bad4.css.map": "/Notatnik_It/static/css/main.6eb2bad4.css.map",
+    "main.8b87fbfc.css.map": "/Notatnik_It/static/css/main.8b87fbfc.css.map",
     "main.47cb8cc9.js.map": "/Notatnik_It/static/js/main.47cb8cc9.js.map",
     "453.117b0875.chunk.js.map": "/Notatnik_It/static/js/453.117b0875.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6eb2bad4.css",
+    "static/css/main.8b87fbfc.css",
     "static/js/main.47cb8cc9.js"
   ]
 }
